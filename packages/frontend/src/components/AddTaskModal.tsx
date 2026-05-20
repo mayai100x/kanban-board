@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { CreateTaskPayload } from '../api';
+import type { CreateTaskPayload } from '@kanban/shared';
 
 interface Props {
   onClose: () => void;

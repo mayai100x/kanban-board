@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { Board, Column, ColumnId, Task, CreateTaskPayload, UpdateTaskPayload } from './types.js';
+import type { Board, Column, ColumnId, Task, CreateTaskPayload, UpdateTaskPayload } from '@kanban/shared';
 
 const BOARD_PATH = path.resolve(os.homedir(), '.hermes/projects/kanban/board.md');
 

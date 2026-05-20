@@ -1,0 +1,6 @@
+{
+  "name": "@kanban/shared",
+  "type": "module",
+  "main": "src/types.ts",
+  "types": "src/types.ts"
+}

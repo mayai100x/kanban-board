@@ -26,6 +26,25 @@ export interface Board {
   columns: Column[];
 }
 
+export interface CreateTaskPayload {
+  title: string;
+  priority?: Task['priority'];
+  project?: string;
+  notes?: string;
+}
+
+export interface UpdateTaskPayload {
+  title?: string;
+  priority?: Task['priority'];
+  project?: string;
+  notes?: string;
+  blocker?: string;
+  column?: ColumnId;
+  started?: string;
+  completed?: string;
+  readySince?: string;
+}
+
 export const COLUMN_ORDER: { id: ColumnId; title: string; icon: string }[] = [
   { id: 'backlog', title: 'Backlog', icon: '📥' },
   { id: 'ready', title: 'Ready', icon: '🎯' },

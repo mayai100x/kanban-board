@@ -1,4 +1,4 @@
-import { type Column, type ColumnId } from '../types';
+import { type Column, type ColumnId } from '@kanban/shared';
 import Card from './Card';
 
 interface Props {

@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import type { Board, ColumnId } from '../types';
-import { COLUMN_ORDER } from '../types';
+import type { Board, ColumnId, CreateTaskPayload } from '@kanban/shared';
+import { COLUMN_ORDER } from '@kanban/shared';
 import Column from './Column';
 import AddTaskModal from './AddTaskModal';
-import { fetchBoard, createTask, updateTask, deleteTask, CreateTaskPayload } from '../api';
+import { fetchBoard, createTask, updateTask, deleteTask } from '../api';
 
 const POLL_INTERVAL = 5000;
 

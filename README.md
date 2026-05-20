@@ -1,23 +1,33 @@
 # 🎯 Kanban Board
 
-A full-stack Kanban board for task management.
+A full-stack Kanban board for task management — monorepo powered by Bun.
 
-- **Frontend:** React 19 + TypeScript + Tailwind CSS v4
-- **Backend:** Express + TypeScript API
-- **Persistence:** Markdown file (simple, human-readable)
+```
+kanban-board/
+├── packages/
+│   ├── shared/          # Shared TypeScript types
+│   ├── backend/         # Express API (Bun + TypeScript)
+│   └── frontend/        # React 19 + Tailwind v4 + Vite
+├── package.json         # Bun workspaces root
+└── README.md
+```
+
+## Prerequisites
+
+- [Bun](https://bun.sh/) 1.3+
 
 ## Quick Start
 
 ```bash
-# Backend
-cd backend
-npm install
-npm run dev    # → http://localhost:3001
+# Install all dependencies (workspaces)
+bun install
 
-# Frontend (separate terminal)
-cd frontend
-npm install
-npm run dev    # → http://localhost:5173
+# Start both backend + frontend
+bun run dev
+
+# Or individually:
+bun run dev:backend   # → http://localhost:3001
+bun run dev:frontend  # → http://localhost:5173
 ```
 
 The frontend proxies `/api` requests to the backend, so just open `http://localhost:5173`.
@@ -33,10 +43,10 @@ The frontend proxies `/api` requests to the backend, so just open `http://localh
 
 ## Tech
 
+- **Bun** — runtime, package manager, workspace orchestration
 - **React 19** — latest stable
-- **TypeScript** — strict mode
+- **TypeScript** — strict mode (shared types in `@kanban/shared`)
 - **Tailwind v4** — CSS-first config, `@theme` customization
 - **Vite 6** — fast dev server with HMR
 - **Express 5** — lightweight API
-- **tsx** — run TypeScript directly (no build step)
 - **Zero runtime deps** — no state library, no ORM, just files and fetch

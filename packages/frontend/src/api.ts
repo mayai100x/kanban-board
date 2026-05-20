@@ -1,4 +1,5 @@
-import type { Board, ColumnId, CreateTaskPayload, UpdateTaskPayload, Task } from './types';
+import type { Board, ColumnId, Task } from '@kanban/shared';
+import type { CreateTaskPayload, UpdateTaskPayload } from '@kanban/shared';
 
 const BASE = '/api';
 
@@ -31,23 +32,4 @@ export async function updateTask(id: string, payload: UpdateTaskPayload): Promis
 export async function deleteTask(id: string): Promise<void> {
   const res = await fetch(`${BASE}/tasks/${id}`, { method: 'DELETE' });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-}
-
-export interface CreateTaskPayload {
-  title: string;
-  priority?: Task['priority'];
-  project?: string;
-  notes?: string;
-}
-
-export interface UpdateTaskPayload {
-  title?: string;
-  priority?: Task['priority'];
-  project?: string;
-  notes?: string;
-  blocker?: string;
-  column?: ColumnId;
-  started?: string;
-  completed?: string;
-  readySince?: string;
 }
