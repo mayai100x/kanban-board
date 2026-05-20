@@ -11,7 +11,7 @@ export interface Task {
   blocker?: string;
 }
 
-export type ColumnId = 'backlog' | 'ready' | 'active' | 'review' | 'done' | 'blocked';
+export type ColumnId = 'backlog' | 'ready' | 'planning' | 'active' | 'review' | 'done' | 'blocked';
 
 export interface Column {
   id: ColumnId;
@@ -48,6 +48,7 @@ export interface UpdateTaskPayload {
 export const COLUMN_ORDER: { id: ColumnId; title: string; icon: string }[] = [
   { id: 'backlog', title: 'Backlog', icon: '📥' },
   { id: 'ready', title: 'Ready', icon: '🎯' },
+  { id: 'planning', title: 'Planning', icon: '📋' },
   { id: 'active', title: 'Active', icon: '⚡' },
   { id: 'review', title: 'Review', icon: '👀' },
   { id: 'done', title: 'Done', icon: '✅' },

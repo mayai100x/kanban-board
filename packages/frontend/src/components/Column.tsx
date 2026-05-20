@@ -1,4 +1,4 @@
-import { type Column, type ColumnId } from '@kanban/shared';
+import { type Column, type ColumnId, type Task } from '@kanban/shared';
 import Card from './Card';
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
   onDragOver: (colId: ColumnId) => void;
   onDragLeave: () => void;
   onMove: (taskId: string, targetCol: string) => void;
+  onEdit: (task: Task) => void;
 }
 
 export default function Column({
@@ -19,6 +20,7 @@ export default function Column({
   onDragOver,
   onDragLeave,
   onMove,
+  onEdit,
 }: Props) {
   const count = column.tasks.length;
 
@@ -51,6 +53,7 @@ export default function Column({
               columnId={column.id}
               onDragStart={onDragStart}
               onMove={onMove}
+              onEdit={onEdit}
             />
           ))
         )}

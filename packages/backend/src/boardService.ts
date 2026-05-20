@@ -8,6 +8,7 @@ const BOARD_PATH = path.resolve(os.homedir(), '.hermes/projects/kanban/board.md'
 const COLUMN_MAP: Record<ColumnId, { title: string; icon: string }> = {
   backlog: { title: 'Backlog', icon: '📥' },
   ready: { title: 'Ready', icon: '🎯' },
+  planning: { title: 'Planning', icon: '📋' },
   active: { title: 'Active', icon: '⚡' },
   review: { title: 'Review', icon: '👀' },
   done: { title: 'Done', icon: '✅' },
@@ -40,6 +41,7 @@ function createEmptyBoard(): Board {
 const COLUMN_HEADERS: Record<string, ColumnId> = {
   '📥 Backlog': 'backlog',
   '🎯 Ready': 'ready',
+  '📋 Planning': 'planning',
   '⚡ Active': 'active',
   '👀 Review': 'review',
   '✅ Done': 'done',
@@ -141,6 +143,11 @@ function parseTaskRow(cells: string[], columnId: ColumnId): Task | null {
     task.priority = (cells[2] || 'P2') as Task['priority'];
     task.project = cells[3] || '';
     task.added = cells[4] || '';
+  } else if (columnId === 'planning') {
+    task.priority = (cells[2] || 'P2') as Task['priority'];
+    task.project = cells[3] || '';
+    task.started = cells[4] || '';
+    task.notes = cells[5] || '';
   } else if (columnId === 'active') {
     task.priority = (cells[2] || 'P2') as Task['priority'];
     task.project = cells[3] || '';
@@ -212,6 +219,7 @@ function getColumnDesc(id: ColumnId): string {
   const descs: Record<ColumnId, string> = {
     backlog: '*Unprocessed items — needs clarification and prioritization*',
     ready: '*Prioritized next actions — pick from here*',
+    planning: '*Plan written — review and approve to start execution*',
     active: '*Currently being worked on*',
     review: '*Done but needs your eyes before final*',
     done: '*Completed tasks*',
@@ -224,6 +232,7 @@ function getColumnHeaders(id: ColumnId): string[] {
   const headers: Record<ColumnId, string[]> = {
     backlog: ['ID', 'Task', 'Priority', 'Project', 'Added'],
     ready: ['ID', 'Task', 'Priority', 'Project', 'Added'],
+    planning: ['ID', 'Task', 'Priority', 'Project', 'Plan Date', 'Notes'],
     active: ['ID', 'Task', 'Priority', 'Project', 'Started', 'Notes'],
     review: ['ID', 'Task', 'Priority', 'Project', 'Ready Since'],
     done: ['ID', 'Task', 'Completed'],
@@ -233,9 +242,12 @@ function getColumnHeaders(id: ColumnId): string[] {
 }
 
 function serializeTaskRow(task: Task, columnId: ColumnId): string {
-  const esc = (s: string | undefined) => (s || '').replace(/\|/g, '\\|');
+  const esc = (s: string | undefined) => (s || '').replace(/\|/g, '\\|').replace(/\n/g, '; ').replace(/\r/g, '');
   if (columnId === 'backlog' || columnId === 'ready') {
     return `| ${esc(task.id)} | ${esc(task.title)} | ${task.priority} | ${esc(task.project)} | ${esc(task.added)} |`;
+  }
+  if (columnId === 'planning') {
+    return `| ${esc(task.id)} | ${esc(task.title)} | ${task.priority} | ${esc(task.project)} | ${esc(task.started || '')} | ${esc(task.notes || '')} |`;
   }
   if (columnId === 'active') {
     return `| ${esc(task.id)} | ${esc(task.title)} | ${task.priority} | ${esc(task.project)} | ${esc(task.started || '')} | ${esc(task.notes || '')} |`;

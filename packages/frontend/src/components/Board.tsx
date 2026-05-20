@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import type { Board, ColumnId, CreateTaskPayload } from '@kanban/shared';
+import type { Board, ColumnId, Task, CreateTaskPayload } from '@kanban/shared';
 import { COLUMN_ORDER } from '@kanban/shared';
 import Column from './Column';
 import AddTaskModal from './AddTaskModal';
+import EditTaskModal from './EditTaskModal';
 import { fetchBoard, createTask, updateTask, deleteTask } from '../api';
 
 const POLL_INTERVAL = 5000;
@@ -12,6 +13,7 @@ export default function Board() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [dragCol, setDragCol] = useState<string | null>(null);
   const [dragTaskId, setDragTaskId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<ColumnId | null>(null);
@@ -62,6 +64,7 @@ export default function Board() {
       const now = new Date().toISOString().slice(0, 10);
       const payload: Record<string, unknown> = { column: targetCol };
 
+      if (targetCol === 'planning') payload.started = now;
       if (targetCol === 'active') payload.started = now;
       if (targetCol === 'done') payload.completed = now;
       if (targetCol === 'review') payload.readySince = now;
@@ -93,6 +96,15 @@ export default function Board() {
     } catch (err) {
       console.error('Failed to delete task', err);
     }
+  };
+
+  const handleEdit = (task: Task) => {
+    setEditingTask(task);
+  };
+
+  const handleEditSaved = async () => {
+    setEditingTask(null);
+    await load();
   };
 
   if (loading) {
@@ -164,6 +176,7 @@ export default function Board() {
               onDragOver={(colId) => setDropTarget(colId)}
               onDragLeave={() => setDropTarget(null)}
               onMove={handleMoveViaClick}
+              onEdit={handleEdit}
             />
           );
         })}
@@ -193,6 +206,15 @@ export default function Board() {
         <AddTaskModal
           onClose={() => setShowAdd(false)}
           onSubmit={handleAdd}
+        />
+      )}
+
+      {/* Edit Task Modal */}
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
+          onSaved={handleEditSaved}
         />
       )}
     </div>
