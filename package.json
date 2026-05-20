@@ -1,0 +1,15 @@
+{
+  "name": "kanban-board",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --parallel dev:backend dev:frontend",
+    "dev:backend": "bun run --filter @kanban/backend dev",
+    "dev:frontend": "bun run --filter @kanban/frontend dev",
+    "build": "bun run --filter @kanban/frontend build",
+    "clean": "rm -rf packages/*/node_modules node_modules"
+  }
+}

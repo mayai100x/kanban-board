@@ -1,4 +1,4 @@
-import { type Task, PRIORITY_COLORS } from '../types';
+import { type Task, PRIORITY_COLORS } from '@kanban/shared';
 
 interface Props {
   task: Task;
